@@ -15,6 +15,7 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
+    "on-commit": "jest && npm run ts-compile-check",
     "ts-compile-check": "tsc --noEmit",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
