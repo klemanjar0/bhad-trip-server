@@ -7,6 +7,10 @@ export enum ENVVar {
   DB_USERNAME = 'DB_USERNAME',
   DB_PASS = 'DB_PASS',
   DB_NAME = 'DB_NAME',
+  AWS_REGION = 'AWS_REGION',
+  BUCKET_NAME = 'BUCKET_NAME',
+  AWS_ACCESS_KEY_ID = 'AWS_ACCESS_KEY_ID',
+  AWS_SECRET_ACCESS_KEY = 'AWS_SECRET_ACCESS_KEY',
 }
 
 export interface ENVVariables {
@@ -16,6 +20,10 @@ export interface ENVVariables {
   [ENVVar.DB_USERNAME]: string;
   [ENVVar.DB_PASS]: string;
   [ENVVar.DB_NAME]: string;
+  [ENVVar.AWS_REGION]: string;
+  [ENVVar.BUCKET_NAME]: string;
+  [ENVVar.AWS_ACCESS_KEY_ID]: string;
+  [ENVVar.AWS_SECRET_ACCESS_KEY]: string;
 }
 
 export class ENVService {
