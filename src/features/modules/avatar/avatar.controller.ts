@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AvatarService } from './avatar.service';
-import { S3FileGetObjectPayload } from '../aws/s3/entities';
-import ErrorService from '../errors/ErrorService';
+import { S3FileGetObjectPayload } from '../../aws/s3/entities';
+import ErrorService from '../../errors/ErrorService';
 
 @Controller('avatar')
 export class AvatarController {
