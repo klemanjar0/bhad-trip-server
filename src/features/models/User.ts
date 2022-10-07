@@ -26,19 +26,19 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   [UserField.Id]: number;
 
-  @Column({ unique: true, type: 'text' })
+  @Column({ unique: true, type: 'text', nullable: false })
   [UserField.UserName]: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: false })
   [UserField.Password]: string;
 
   @Column({ type: 'text', default: null })
   [UserField.Email]: string | null;
 
-  @Column({ default: true })
+  @Column({ default: true, nullable: false })
   [UserField.IsActive]: boolean;
 
-  @Column({ default: false })
+  @Column({ default: false, nullable: false })
   [UserField.IsOnline]: boolean;
 
   @OneToOne(

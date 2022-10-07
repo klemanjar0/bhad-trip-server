@@ -1,5 +1,11 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { User, UserField } from "./User";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { User, UserField } from './User';
 
 export enum AvatarField {
   Id = 'id',
@@ -7,6 +13,7 @@ export enum AvatarField {
   AvatarFilePath = 'filePath',
   AvatarFileType = 'fileType',
   AvatarFileSize = 'fileSize',
+  BucketName = 'bucketName',
   User = 'user',
 }
 
@@ -15,10 +22,10 @@ export class Avatar extends BaseEntity {
   @PrimaryGeneratedColumn()
   [AvatarField.Id]: number;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: false })
   [AvatarField.AvatarName]: string;
 
-  @Column({ type: 'path' })
+  @Column({ type: 'text', nullable: false })
   [AvatarField.AvatarFilePath]: string;
 
   @Column({ type: 'text' })
@@ -26,6 +33,9 @@ export class Avatar extends BaseEntity {
 
   @Column({ type: 'text' })
   [AvatarField.AvatarFileSize]: string;
+
+  @Column({ type: 'text', nullable: false })
+  [AvatarField.BucketName]: string;
 
   @ManyToOne(() => User, (user) => user[UserField.Images])
   [AvatarField.User]: User;
