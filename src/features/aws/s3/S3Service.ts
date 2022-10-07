@@ -1,8 +1,7 @@
 import {
+  GetObjectCommand,
   PutObjectCommand,
   S3Client,
-  GetObjectCommand,
-  GetObjectCommandOutput,
 } from '@aws-sdk/client-s3';
 import { s3Client } from './index';
 import { PutObjectCommandInput } from '@aws-sdk/client-s3/dist-types/commands/PutObjectCommand';
@@ -70,14 +69,7 @@ class S3Service implements IS3Service {
     };
 
     const data = await this.s3Client.send(new GetObjectCommand(params));
-    const stream = data.Body as Readable;
-
-    return await new Promise<Buffer>((resolve, reject) => {
-      const chunks: Buffer[] = [];
-      stream.on('data', (chunk) => chunks.push(chunk));
-      stream.once('end', () => resolve(Buffer.concat(chunks)));
-      stream.once('error', reject);
-    });
+    return data.Body as Readable;
   }
 }
 

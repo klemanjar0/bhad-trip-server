@@ -4,8 +4,10 @@ import { Repository } from 'typeorm';
 import { Avatar, AvatarField } from '../../models/Avatar';
 import S3Service from '../../aws/s3/S3Service';
 import { IMAGES_FOLDER } from '../../constants';
-import { FileUploadResponse, S3FileGetObjectPayload } from '../../aws/s3/entities';
-import ErrorService from '../../errors/ErrorService';
+import {
+  FileUploadResponse,
+  S3FileGetObjectPayload,
+} from '../../aws/s3/entities';
 import { ERROR } from '../../errors/ErrorCodes';
 
 @Injectable()

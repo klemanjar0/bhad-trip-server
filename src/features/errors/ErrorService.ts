@@ -1,11 +1,15 @@
-import { ERROR, ErrorCodes } from './ErrorCodes';
+import { ERROR, ErrorCodes, ErrorStatusCodes } from './ErrorCodes';
 import { HTTPError } from '../entities/HTTPError';
+import * as moment from 'moment';
+import { ErrorHttpStatusCode } from '@nestjs/common/utils/http-error-by-code.util';
 
 class ErrorService {
-  errors: Record<number, string>;
+  errors: Record<ERROR, string>;
+  errorStatusCodes: Record<ERROR, ErrorHttpStatusCode>;
 
-  constructor(errors) {
+  constructor(errors, errorStatusCodes) {
     this.errors = errors;
+    this.errorStatusCodes = errorStatusCodes;
   }
 
   getErrorMap() {
@@ -16,11 +20,13 @@ class ErrorService {
     return this.errors[errorCode];
   }
 
-  getError(errorCode): HTTPError {
+  getError(errorCode: ERROR): HTTPError {
     return {
       message: this.errors[errorCode] || this.errors[ERROR.UNKNOWN],
+      statusCode: this.errorStatusCodes[errorCode],
+      timestamp: moment().toISOString(),
     };
   }
 }
 
-export default new ErrorService(ErrorCodes);
+export default new ErrorService(ErrorCodes, ErrorStatusCodes);
