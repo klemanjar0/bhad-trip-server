@@ -14,8 +14,6 @@ import { S3FileGetObjectPayload } from '../../aws/s3/entities';
 import ErrorService from '../../errors/ErrorService';
 import { Response } from 'express';
 import { HttpStatus } from '@nestjs/common/enums';
-import { join } from 'path';
-import { createReadStream } from 'fs';
 
 @Controller('avatar')
 export class AvatarController {

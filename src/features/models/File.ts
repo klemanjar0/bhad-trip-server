@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from 'typeorm';
+import { ENTITY } from '../constants';
 
 export enum FileField {
   Id = 'id',
@@ -6,6 +7,8 @@ export enum FileField {
   FilePath = 'filePath',
   FileType = 'fileType',
   FileSize = 'fileSize',
+  Entity = 'entity',
+  EntityId = 'entityId',
 }
 
 @Entity()
@@ -24,4 +27,10 @@ export class File extends BaseEntity {
 
   @Column({ type: 'text', nullable: false })
   [FileField.FileSize]: string;
+
+  @Column({ type: 'text' })
+  [FileField.Entity]: ENTITY;
+
+  @Column({ type: 'text' })
+  [FileField.EntityId]: string;
 }

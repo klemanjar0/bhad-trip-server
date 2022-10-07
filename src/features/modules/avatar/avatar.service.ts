@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Avatar, AvatarField } from '../../models/Avatar';
 import S3Service from '../../aws/s3/S3Service';
-import { IMAGES_FOLDER } from '../../constants';
+import { ENTITY, IMAGES_FOLDER } from '../../constants';
 import {
   FileUploadResponse,
   S3FileGetObjectPayload,
@@ -12,12 +12,18 @@ import { ERROR } from '../../errors/ErrorCodes';
 
 @Injectable()
 export class AvatarService {
+  entity = ENTITY.AVATAR;
+
   constructor(
     @InjectRepository(Avatar)
     private avatarRepository: Repository<Avatar>,
   ) {}
 
   async getAvatar(payload: S3FileGetObjectPayload) {
+    if (!payload.key || !payload.bucketName) {
+      throw new Error(ERROR.INCOMPLETE_REQUEST_DATA);
+    }
+
     const entity = await this.avatarRepository.findOneBy({
       [AvatarField.AvatarFilePath]: payload.key,
     });

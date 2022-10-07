@@ -1,5 +1,7 @@
 import {
   BaseEntity,
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   JoinColumn,
@@ -9,12 +11,15 @@ import {
 } from 'typeorm';
 import { UserMetadata, UserMetaDataField } from './UserMetadata';
 import { Avatar, AvatarField } from './Avatar';
+import { hash } from '../bcrypt';
+import * as moment from 'moment';
 
 export enum UserField {
   Id = 'id',
   UserName = 'userName',
   Password = 'password',
   Email = 'email',
+  CreatedDate = 'CreatedDate',
   IsActive = 'isActive',
   IsOnline = 'isOnline',
   UserMetaData = 'userMetaData',
@@ -38,6 +43,9 @@ export class User extends BaseEntity {
   @Column({ default: true, nullable: false })
   [UserField.IsActive]: boolean;
 
+  @Column({ type: Date })
+  [UserField.CreatedDate]: Date;
+
   @Column({ default: false, nullable: false })
   [UserField.IsOnline]: boolean;
 
@@ -51,4 +59,17 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Avatar, (avatar) => avatar[AvatarField.User])
   [UserField.Images]: Avatar[];
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPasswordOnCreate() {
+    if (this[UserField.Password]) {
+      this[UserField.Password] = await hash(this[UserField.Password]);
+    }
+  }
+
+  @BeforeInsert()
+  onCreate() {
+    this[UserField.CreatedDate] = moment().toDate();
+  }
 }
