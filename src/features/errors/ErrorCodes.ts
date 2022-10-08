@@ -3,6 +3,7 @@ import { HttpStatus } from '@nestjs/common/enums';
 
 export enum ERROR {
   UNAUTHORIZED = 'ERR_UNAUTHORIZED',
+  NO_PERMISSION = 'ERR_NO_PERMISSION',
   DATABASE_ERROR = 'ERR_DATABASE_ERROR',
   NO_ENTITY = 'ERR_NO_ENTITY',
   NO_FILE = 'ERR_NO_FILE',
@@ -30,6 +31,7 @@ export const ErrorCodes: Record<ERROR, string> = {
     'Password must contain minimum eight characters, at least one letter and one number.',
   [ERROR.MINIMUM_CHARS]: 'Field must contain minimum 3 characters.',
   [ERROR.INCORRECT_PASSWORD]: 'Incorrect password.',
+  [ERROR.NO_PERMISSION]: 'No permission to this piece of data.',
 };
 
 export const ErrorStatusCodes: Record<ERROR, ErrorHttpStatusCode> = {
@@ -45,4 +47,5 @@ export const ErrorStatusCodes: Record<ERROR, ErrorHttpStatusCode> = {
   [ERROR.WEAK_PASSWORD]: HttpStatus.BAD_REQUEST,
   [ERROR.MINIMUM_CHARS]: HttpStatus.BAD_REQUEST,
   [ERROR.INCORRECT_PASSWORD]: HttpStatus.BAD_REQUEST,
+  [ERROR.NO_PERMISSION]: HttpStatus.FORBIDDEN,
 };

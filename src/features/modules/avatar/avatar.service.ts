@@ -35,6 +35,22 @@ export class AvatarService {
     return await S3Service.getFile(payload);
   }
 
+  async getAvatarOwnerId(key: string) {
+    if (!key) {
+      throw new Error(ERROR.INCOMPLETE_REQUEST_DATA);
+    }
+
+    const entity = await this.avatarRepository.findOneBy({
+      [AvatarField.AvatarFilePath]: key,
+    });
+
+    if (!entity) {
+      throw new Error(ERROR.NO_FILE);
+    }
+
+    return entity;
+  }
+
   async uploadAvatar(file: Express.Multer.File): Promise<FileUploadResponse> {
     const { bucketName, path, fileToken, metadata } =
       await S3Service.uploadFile({

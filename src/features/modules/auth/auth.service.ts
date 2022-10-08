@@ -1,13 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User, UserField } from '../../models/User';
 import { RegisterPayload } from './entities';
 import { ERROR } from '../../errors/ErrorCodes';
 import { ENTITY } from '../../constants';
-import { JwtService } from '@nestjs/jwt';
 import { validatePayload } from './auth.utils';
 import { compareHash } from '../../bcrypt';
+import { Request } from 'express';
+import JwtService from '../../shared/JWTService';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +17,6 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private jwtService: JwtService,
   ) {}
 
   async authenticate(user: {
@@ -28,8 +28,36 @@ export class AuthService {
       sub: user[UserField.Id],
     };
     return {
-      accessToken: this.jwtService.sign(payload),
+      accessToken: await JwtService.getJwt(payload),
     };
+  }
+
+  async checkAuth(@Req() req: Request) {
+    const token: string =
+      (req.headers['authorization'] as string) ||
+      (req.headers['Authorization'] as string);
+
+    try {
+      const data = await JwtService.decodeJwt(token);
+
+      if (!data.sub) {
+        throw new Error();
+      }
+
+      return data;
+    } catch (e) {
+      throw new Error(ERROR.UNAUTHORIZED);
+    }
+  }
+
+  async checkPermission(@Req() req: Request, grantedUserId: number) {
+    const token: string =
+      (req.headers['authorization'] as string) ||
+      (req.headers['Authorization'] as string);
+
+    if ((await JwtService.decodeJwt(token)).sub !== grantedUserId) {
+      throw new Error(ERROR.UNAUTHORIZED);
+    }
   }
 
   async login(payload: RegisterPayload) {

@@ -11,6 +11,8 @@ export enum ENVVar {
   BUCKET_NAME = 'BUCKET_NAME',
   AWS_ACCESS_KEY_ID = 'AWS_ACCESS_KEY_ID',
   AWS_SECRET_ACCESS_KEY = 'AWS_SECRET_ACCESS_KEY',
+  JWT_MAX_AGE = 'JWT_MAX_AGE',
+  JWT_SECRET = 'JWT_SECRET',
 }
 
 export interface ENVVariables {
@@ -24,6 +26,8 @@ export interface ENVVariables {
   [ENVVar.BUCKET_NAME]: string;
   [ENVVar.AWS_ACCESS_KEY_ID]: string;
   [ENVVar.AWS_SECRET_ACCESS_KEY]: string;
+  [ENVVar.JWT_MAX_AGE]: string;
+  [ENVVar.JWT_SECRET]: string;
 }
 
 export class ENVService {
