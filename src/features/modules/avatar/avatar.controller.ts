@@ -14,6 +14,7 @@ import { S3FileGetObjectPayload } from '../../aws/s3/entities';
 import ErrorService from '../../errors/ErrorService';
 import { Response } from 'express';
 import { HttpStatus } from '@nestjs/common/enums';
+import * as fs from 'fs';
 
 @Controller('avatar')
 export class AvatarController {
@@ -35,12 +36,14 @@ export class AvatarController {
   }
 
   @Post('get')
-  async getFile(@Body() body: S3FileGetObjectPayload) {
+  async getFile(@Res() res: Response, @Body() body: S3FileGetObjectPayload) {
     try {
       const data = await this.avatarService.getAvatar(body);
-      return new StreamableFile(data);
+      res.status(HttpStatus.OK).contentType(data.metadata.mimetype);
+      data.body.pipe(res);
     } catch (e) {
-      return ErrorService.getError(e.message);
+      const err = ErrorService.getError(e.message);
+      return res.status(err.statusCode).send(err);
     }
   }
 }

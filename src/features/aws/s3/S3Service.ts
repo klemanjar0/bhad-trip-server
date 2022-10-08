@@ -69,7 +69,7 @@ class S3Service implements IS3Service {
     };
 
     const data = await this.s3Client.send(new GetObjectCommand(params));
-    return data.Body as Readable;
+    return { body: data.Body as Readable, metadata: data.Metadata };
   }
 }
 

@@ -9,6 +9,10 @@ export enum ERROR {
   INCOMPLETE_REQUEST_DATA = 'ERR_INCOMPLETE_REQUEST_DATA',
   USER_NOT_FOUND = 'ERR_USER_NOT_FOUND',
   USERNAME_DUPLICATE = 'ERR_USERNAME_DUPLICATE',
+  TYPE_ERROR = 'TYPE_ERROR',
+  WEAK_PASSWORD = 'WEAK_PASSWORD',
+  MINIMUM_CHARS = 'MINIMUM_CHARS',
+  INCORRECT_PASSWORD = 'INCORRECT_PASSWORD',
   UNKNOWN = 'ERR_UNKNOWN',
 }
 
@@ -21,6 +25,11 @@ export const ErrorCodes: Record<ERROR, string> = {
   [ERROR.INCOMPLETE_REQUEST_DATA]: 'Request body missing fields.',
   [ERROR.USER_NOT_FOUND]: 'User not found.',
   [ERROR.USERNAME_DUPLICATE]: 'User with provided username already exists.',
+  [ERROR.TYPE_ERROR]: 'Type error.',
+  [ERROR.WEAK_PASSWORD]:
+    'Password must contain minimum eight characters, at least one letter and one number.',
+  [ERROR.MINIMUM_CHARS]: 'Field must contain minimum 3 characters.',
+  [ERROR.INCORRECT_PASSWORD]: 'Incorrect password.',
 };
 
 export const ErrorStatusCodes: Record<ERROR, ErrorHttpStatusCode> = {
@@ -32,4 +41,8 @@ export const ErrorStatusCodes: Record<ERROR, ErrorHttpStatusCode> = {
   [ERROR.INCOMPLETE_REQUEST_DATA]: HttpStatus.BAD_REQUEST,
   [ERROR.USER_NOT_FOUND]: HttpStatus.NOT_FOUND,
   [ERROR.USERNAME_DUPLICATE]: HttpStatus.BAD_REQUEST,
+  [ERROR.TYPE_ERROR]: HttpStatus.BAD_REQUEST,
+  [ERROR.WEAK_PASSWORD]: HttpStatus.BAD_REQUEST,
+  [ERROR.MINIMUM_CHARS]: HttpStatus.BAD_REQUEST,
+  [ERROR.INCORRECT_PASSWORD]: HttpStatus.BAD_REQUEST,
 };
