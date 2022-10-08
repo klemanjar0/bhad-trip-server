@@ -9,8 +9,8 @@ export const validatePayload = (payload: any) => {
   }
 
   if (
-    payload.password !== typeof 'string' ||
-    payload.username !== typeof 'string'
+    typeof payload.password !== 'string' ||
+    typeof payload.username !== 'string'
   ) {
     throw new Error(ERROR.TYPE_ERROR);
   }

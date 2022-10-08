@@ -32,7 +32,9 @@ export class AuthService {
     };
   }
 
-  async login(username: string, password: string) {
+  async login(payload: RegisterPayload) {
+    const { username = '', password = '' } = payload;
+
     const user = await this.userRepository.findOneBy({
       [UserField.UserName]: username,
     });
