@@ -9,6 +9,7 @@ import {
   S3FileGetObjectPayload,
 } from '../../aws/s3/entities';
 import { ERROR } from '../../errors/ErrorCodes';
+import { UserField } from '../../models/User';
 
 @Injectable()
 export class AvatarService {
@@ -48,10 +49,13 @@ export class AvatarService {
       throw new Error(ERROR.NO_FILE);
     }
 
-    return entity;
+    return entity[AvatarField.User][UserField.Id];
   }
 
-  async uploadAvatar(file: Express.Multer.File): Promise<FileUploadResponse> {
+  async uploadAvatar(
+    file: Express.Multer.File,
+    userId: number,
+  ): Promise<FileUploadResponse> {
     const { bucketName, path, fileToken, metadata } =
       await S3Service.uploadFile({
         file,
@@ -64,6 +68,7 @@ export class AvatarService {
       [AvatarField.AvatarName]: fileToken,
       [AvatarField.AvatarFileType]: metadata.mimetype,
       [AvatarField.AvatarFileSize]: metadata.size,
+      [AvatarField.User]: { [UserField.Id]: userId },
     } as Avatar;
 
     const entity = await this.avatarRepository.create(payload);

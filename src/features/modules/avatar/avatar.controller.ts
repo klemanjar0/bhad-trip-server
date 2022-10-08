@@ -30,8 +30,8 @@ export class AvatarController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     try {
-      await this.authService.checkAuth(req);
-      const data = await this.avatarService.uploadAvatar(file);
+      const userData = await this.authService.checkAuth(req);
+      const data = await this.avatarService.uploadAvatar(file, userData.sub);
       return res.status(HttpStatus.CREATED).send(data);
     } catch (e) {
       const err = ErrorService.getError(e.message);
